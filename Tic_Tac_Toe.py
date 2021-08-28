@@ -1,7 +1,13 @@
 from tkinter import *
 
+global running, time
+running = 0
+time = 15
+
 def checked(button):
-    global player
+    global player,time,running
+    running = 1
+    time = 15
     if button["text"] != "          ":
         return
     button["text"] =  "    " + player+"    "
@@ -12,18 +18,42 @@ def checked(button):
         player_name()
         button["bg"] = "yellow"
         win()
-
     else:
         player = "X"
         button["bg"] = "lightgreen"
         win()
-
     player_name()
         
 def dis():
     for x in range(9):
         btn = list[x]
         btn.config(state=DISABLED)
+    stop()
+
+def start():
+    global time,player
+    if(running):
+        if time > 0:
+            time -= 1
+        else:
+            dis()
+            result_playername()
+        timerText.configure(text="남은 시간 : " + str(time),fg = "blue")
+    tk.after(1000,start)
+
+def result_playername():
+    global player
+    if player == "X":
+        player = "O"
+    else:
+        player = "X"
+    result_text = "!!"+player + "의 승리!!"
+    t.config(text = result_text)
+    quit()
+
+def stop():
+    global running
+    running = 0
 
 def nor():
     for x in range(9):
@@ -36,10 +66,12 @@ def player_name():
     current_player = "현재 player는 " + player
     name = Label(tk, text = current_player, font = ("bold", 13))
     name.place(x = 280,y = 90)
+    start()
     
 def res():
     nor()
     t.config(text = "Tic Tac Toe")
+    start()
 
 def win():
     if a0["text"] == "    X    " and a1["text"] == "    X    " and a2["text"] == "    X    ":
@@ -105,7 +137,8 @@ def win():
         dis()
 
 tk = Tk()
-tk.geometry("500x300")
+tk.maxsize(width = 500,height = 300)
+tk.minsize(width = 500,height = 300)
 player = "X"
 
 tic = Frame(tk,width = 300, height = 200)
@@ -118,7 +151,8 @@ tk.title("Tic Tac Toe")
 t = Label(tic,text = "Tic Tac Toe",font = (15), fg = "red",pady = 20)
 t.grid(row = 2,columnspan = 4)
 
-
+timerText = Label(tk, text = "", font = ("bold", 13))
+timerText.place(x = 280,y = 110)
 
 list = []
 
