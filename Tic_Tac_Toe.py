@@ -15,7 +15,6 @@ def checked(button):
 
     if player == "X":
         player = "O"
-        player_name()
         button["bg"] = "yellow"
         win()
     else:
@@ -31,18 +30,18 @@ def dis():
     stop()
 
 def start():
-    global time,player
     if(running):
+        global time
         if time > 0:
             time -= 1
         else:
-            dis()
-            result_playername()
+            result_playername()  
         timerText.configure(text="남은 시간 : " + str(time),fg = "blue")
     tk.after(1000,start)
 
 def result_playername():
     global player
+    dis()
     if player == "X":
         player = "O"
     else:
@@ -66,12 +65,13 @@ def player_name():
     current_player = "현재 player는 " + player
     name = Label(tk, text = current_player, font = ("bold", 13))
     name.place(x = 280,y = 90)
-    start()
     
 def res():
+    global time
+    time = 15
+    start()
     nor()
     t.config(text = "Tic Tac Toe")
-    start()
 
 def win():
     if a0["text"] == "    X    " and a1["text"] == "    X    " and a2["text"] == "    X    ":
@@ -194,5 +194,5 @@ list.append(a8)
 
 restart = Button(down_pack, text = "restart",width = 6, command = res)
 restart.pack()
-
+start()
 tic.mainloop()
